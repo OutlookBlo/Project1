@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Gesture To Text</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+    <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.26/webcam.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+
+  <body>
+  <div class="container">
+  
+    <center>
+<h3 class = "btn btn-warning heading">GESTURE TO TEXT APP
+  <br>
+  <span>&#9996;</span>
+  <span>&#128076;</span>
+  <span>&#128077;</span>
+</h3>
+      <br><br>
+      <button id="start-camera">Start Camera</button>
+      <p style="font-size: 22px;">Take your selfie to generate gesture</p>
+
+      <div class="col-md-4 col-sm-12 col-xs-12">
+	      <label>Webcam View - </label>
+<div id="camera"></div>
+        <br><br>
+<button onclick="take_snapshot();" class="btn btn-warning">Capture Image</button>
+      </div>
+      <div class="col-md-4 col-sm-12 col-xs-12">
+        <label>Prediction 1 - </label>
+        <p class="emotion_name" id="result_emotion_name"></p>
+        <p class="emoji" id="update_emoji"></p>
+      </div>
+      <div class="col-md-4 col-sm-12 col-xs-12">
+	      <label>Snapshot - </label>
+        <div id="result"></div>
+        <br><br>
+        <button onclick="check();" class="btn btn-success">Predict Emotion</button>
+    </center>
+
+  </div>
+
+<script src="main.js">
+  let camera_button = document.querySelector("#start-camera");
+let video = document.querySelector("#video");
+let click_button = document.querySelector("#click-photo");
+let canvas = document.querySelector("#canvas");
+let dataurl = document.querySelector("#dataurl");
+let dataurl_container = document.querySelector("#dataurl-container");
+
+camera_button.addEventListener('click', async function() {
+   	let stream = null;
+
+    try {
+    	stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+    }
+    catch(error) {
+    	alert(error.message);
+    	return;
+    }
+
+    video.srcObject = stream;
+
+    video.style.display = 'block';
+    camera_button.style.display = 'none';
+    click_button.style.display = 'block';
+});
+
+click_button.addEventListener('click', function() {
+    canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+   	let image_data_url = canvas.toDataURL('image/jpeg');
+    
+    dataurl.value = image_data_url;
+    dataurl_container.style.display = 'block';
+});
+</script>
+
+  </body>
+</html>
+
+ 
